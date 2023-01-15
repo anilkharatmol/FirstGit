@@ -11,3 +11,10 @@ for(let i=0;i<items.length;i++)
 {
     items[i].style.fontWeight="bold";
 }
+
+let tag=document.getElementsByTagName('li');
+tag[2].style.backgroundColor="grey";
+
+    tag[1].style.color="red";
+    tag[3].style.backgroundColor="pink";
+
