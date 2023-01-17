@@ -33,3 +33,52 @@
 <script src="dom1.js"></script>
 </body>
 </html>
+
+
+
+let form=document.getElementById('addForm');
+let itemList=document.getElementById('items');
+
+//add item event
+form.addEventListener('submit',addForm);
+
+//remove item
+itemList.addEventListener('click',removeItem);
+
+//function addForm
+function addForm(e){
+    e.preventDefault();
+
+    //name of item
+    let newitem =document.getElementById('item').value;
+
+    //adding new item to list
+    let li=document.createElement('li');
+
+    li.className='list-group-item';
+    li.appendChild(document.createTextNode(newitem));
+
+    //add delete button 
+    let del=document.createElement('button');
+    del.className='btn btn-danger btn-sm  float-right delete';
+    del.appendChild(document.createTextNode('X'));
+
+    //add delete button to the list
+    li.appendChild(del);
+
+    //add list to the itemlist
+    itemList.appendChild(li);
+
+
+}
+
+//remove item
+function removeItem(e){
+    if(e.target.classList.contains('delete')){
+        if(confirm('Are you sure?'))
+        {
+            let li=e.target.parentElement;
+            itemList.removeChild(li);
+        }
+    }
+}
