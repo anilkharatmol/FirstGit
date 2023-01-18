@@ -21,3 +21,18 @@
             <script src="local.js">  </script>
         </body> 
     </html>
+
+
+        function getacall(){
+    let name=document.getElementById('name').value;
+    let mail=document.getElementById('email').value;
+    let contact=document.getElementById('number').value;
+    let date=document.getElementById('date').value;
+    let time=document.getElementById('time').value;
+
+    localStorage.setItem('name',name);
+    localStorage.setItem('email id',mail);
+    localStorage.setItem('phone number',contact);
+    localStorage.setItem('date',date);
+    localStorage.setItem('time',time);
+}
