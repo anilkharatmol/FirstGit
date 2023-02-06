@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html>
         <body style="background-image: url('orange.jpg');  background-repeat: no-repeat;  background-size: cover;">
             <div class="container" >
-            <form action="#" onsubmit="getacall()" style=" padding:6px;"> 
-                <h4 style="color: orange; text-align: center;font-family: Calibri; padding: 6px;">Book a call</h4>
-                <p style="text-align: center;">Book a call slot and our representative will call you within 1 hr of selected time.</p>
-                <hr style="position: relative;">
+                <h4 style="color: orange; text-align: center;font-family: Calibri; font-size: large;margin-right: 100px;">Book a call</h4>
+                <p style="margin-left: 330px;">Book a call slot and our representative will call you within 1 hr of selected time.</p><hr>
+                <form action="#" id="myform" style=" padding:6px;margin-left: 280px;"> 
                 <label for="name" class="form-label">Name:</label><br>
                 <input type="text" id="name" name="name" style="width: 600px;" class="form-control"><br>
                 <label for="email" class="form-label">Email:</label><br>
@@ -15,24 +14,91 @@
                 <label for="date&time"class="form-label">Time for call:</label><br>
                 <input type="date" id="date" name="date&time"style="width: 298px;" class="form-control">
                 <input type="time" id="time" name="date&time" style="width: 298px;" class="form-control"><br><br>
-                <button style="width: 600px;background-color: orange;color: white;border: none;">GET A CALL</button>
+                <input type="submit" value="GET A CALL" style="color: white;background-color: orange;width:600px;">
             </form>
+            <ul id="userlist" class="users">
+            </ul>
         </div>
-            <script src="local.js">  </script>
-        </body> 
-    </html>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.2/axios.min.js"> </script>
+            <script >
 
+                let form=document.getElementById('myform');
+                
+form.addEventListener('submit',onSubmit);
 
-        function getacall(){
-    let name=document.getElementById('name').value;
-    let mail=document.getElementById('email').value;
-    let contact=document.getElementById('number').value;
-    let date=document.getElementById('date').value;
-    let time=document.getElementById('time').value;
-
-    localStorage.setItem('name',name);
-    localStorage.setItem('email id',mail);
-    localStorage.setItem('phone number',contact);
-    localStorage.setItem('date',date);
-    localStorage.setItem('time',time);
-}
+function onSubmit(e){
+    
+    e.preventDefault();
+        let name=e.target.name.value;
+        let email=e.target.email.value;
+        let contact=e.target.number.value;
+        let date=e.target.date.value;
+        let time=e.target.time.value;
+        
+        console.log(name);
+        console.log(email);
+        console.log(contact);
+        console.log(date);
+        console.log(time);
+        
+        let obj={
+            name,
+            email,
+            contact,
+            date,
+            time
+        };
+        
+        axios.post("https://crudcrud.com/api/649ac27a56364f66b5ddcff00a1808bc/StudentAppointmentData",obj)
+        .then((response)=>{
+            showUserOnScreen(response.data)
+            console.log(response);
+        }).catch((err)=>{
+            console.log(err);
+        })
+        // localStorage.setItem(obj.email,JSON.stringify(obj));
+        // showUserOnScreen(obj);
+        
+        
+    }
+    function showUserOnScreen(obj){
+        let par=document.getElementById('userlist');
+        let li=document.createElement('li');   
+        li.appendChild(document.createTextNode(obj.name));
+        li.appendChild(document.createTextNode('  '));
+        li.appendChild(document.createTextNode(obj.email));
+        li.appendChild(document.createTextNode('  '));
+        li.appendChild(document.createTextNode(obj.contact));
+        li.appendChild(document.createTextNode('  '));
+        li.appendChild(document.createTextNode(obj.date));
+        li.appendChild(document.createTextNode('  '));
+        li.appendChild(document.createTextNode(obj.time));
+        let delbtn=document.createElement('button');
+        delbtn.textContent='delete';
+        
+        delbtn.onclick=()=>{
+            localStorage.removeItem(obj.email);
+            par.removeChild(li);
+        }
+        let editbtn=document.createElement('input');
+        editbtn.type='button';
+        editbtn.value='Edit';
+        editbtn.onclick=()=>{
+            localStorage.removeItem(obj.email);
+            par.removeChild(li);
+            
+            document.getElementById('name').value=obj.name;
+            document.getElementById('email').value=obj.email;
+            document.getElementById('number').value=obj.contact;
+            document.getElementById('date').value=obj.date;
+            document.getElementById('time').value=obj.time;
+            
+        }
+        li.appendChild(delbtn);
+        li.appendChild(editbtn);
+        par.appendChild(li);
+        
+    }
+</script>
+</body> 
+</html>
