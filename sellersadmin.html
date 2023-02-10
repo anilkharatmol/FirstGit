@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+        <body>
+        <form action="#" id="sellerdAdmin" > 
+            <label for="amount" class="form-label">Selling Price:</label>
+            <input type="number" id="amount" name="amount">
+            <label for="name" class="form-label">Product Name:</label>
+            <input type="text" id="name" name="name">
+            <label for="category" class="form-label">Choose a Category:</label>
+             <select name="category" id="category">
+                <option value="electronics">Electronics</option>
+                <option value="food">Food</option>
+                <option value="skincare">Skincare</option>
+            </select>
+            <button id="add">ADD PRODUCT</button>
+            <h1>PRODUCTS</h1><hr>
+        </form>
+            <ul id="productlist" > </ul>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.2/axios.min.js"> </script>
+        <script>
+              let form=document.getElementById('sellerdAdmin');
+                
+                form.addEventListener('submit',onSubmit);
+                
+                function onSubmit(e){
+                    
+                    e.preventDefault();
+                        let Price=e.target.amount.value;
+                        let name=e.target.name.value;
+                        let category=e.target.category.value;
+                        
+                        let obj={
+                            Price,
+                            name,
+                            category
+                        };
+                        
+                        axios.post("https://crudcrud.com/api/60c30ec524cc44a19881d3b35a42b336/SellingAdmin",obj)
+                        .then((response)=>{
+                            showUserOnScreen(response.data)
+                            //console.log(response);
+                        }).catch((err)=>{
+                            console.log(err);
+                        })
+                        
+                        
+                        
+                    }
+                
+                    window.addEventListener("DOMContentLoaded",()=>{
+                        axios.get("https://crudcrud.com/api/60c30ec524cc44a19881d3b35a42b336/SellingAdmin")
+                        .then((response)=>{
+                
+                            for(let i=0;i<response.data.length;i++){
+                                showUserOnScreen(response.data[i])
+                            }
+                          //  console.log(response);
+                        }).catch((err)=>{
+                            console.log(err);
+                        })
+                    })
+                
+                
+                
+                
+                    function showUserOnScreen(obj){
+                        let par=document.getElementById('productlist');
+                        let li=document.createElement('li');   
+                        li.appendChild(document.createTextNode(obj.Price+'--'));
+                        li.appendChild(document.createTextNode(obj.name+"--"));
+                        li.appendChild(document.createTextNode(obj.category));
+                        li.id=obj._id;
+                        let delbtn=document.createElement('button');
+                        delbtn.textContent='delete';
+                        
+                
+                       
+                       
+                       delbtn.onclick=()=>{
+                         axios.delete(`https://crudcrud.com/api/60c30ec524cc44a19881d3b35a42b336/SellingAdmin/${obj._id}`)
+                        .then((response)=>{
+                            console.log(response);
+                            par.removeChild(li);
+                            // localStorage.removeItem(obj.email);
+                        }).catch((err)=>{
+                            console.log(err);
+                        })
+                        }
+                
+                        li.appendChild(delbtn);
+                        par.appendChild(li);
+                        
+               
+           }
+
+
+        </script>
+    </body>
+</html>
